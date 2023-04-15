@@ -14,7 +14,7 @@ export class SendForgotPasswordMailUseCase {
 
   async execute(email: string) {
     const user = await this.usersRepository.findByEmail(email);
-    const expiresTokenMinutes = 5;
+    const expiresTokenMinutes = 1;
 
     if (!user) {
       throw new NotFoundException('User does not exists.');
@@ -33,5 +33,7 @@ export class SendForgotPasswordMailUseCase {
     });
 
     await this.usersTokensRepository.create(userToken);
+
+    console.log('generated token:', token);
   }
 }

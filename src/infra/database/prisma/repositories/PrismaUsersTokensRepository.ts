@@ -29,4 +29,20 @@ export class PrismaUsersTokensRepository implements UsersTokensRepository {
       data: raw,
     });
   }
+
+  async findByToken(token: string): Promise<UserToken | null> {
+    const userToken = await this.prisma.userToken.findFirst({
+      where: { token },
+    });
+
+    return userToken;
+  }
+
+  async deleteById(id: string): Promise<void> {
+    await this.prisma.userToken.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }
