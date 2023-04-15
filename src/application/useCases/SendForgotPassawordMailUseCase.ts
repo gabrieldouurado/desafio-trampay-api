@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto';
 import { addMinutes } from 'date-fns';
 
 @Injectable()
-export class SendForgotPasswordMail {
+export class SendForgotPasswordMailUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private usersTokensRepository: UsersTokensRepository,

@@ -11,6 +11,20 @@ export class PrismaUsersTokensRepository implements UsersTokensRepository {
   async create(userToken: UserToken): Promise<void> {
     const raw = PrismaUserTokenMapper.toPrisma(userToken);
 
+    const tokenExists = await this.prisma.userToken.findUnique({
+      where: {
+        userId: raw.userId,
+      },
+    });
+
+    if (tokenExists) {
+      await this.prisma.userToken.delete({
+        where: {
+          id: tokenExists.id,
+        },
+      });
+    }
+
     await this.prisma.userToken.create({
       data: raw,
     });

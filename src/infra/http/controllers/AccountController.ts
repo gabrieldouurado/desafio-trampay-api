@@ -2,13 +2,13 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthenticateUserUseCase } from 'src/application/useCases/AuthenticateUserUseCase';
 import { AuthenticateBody } from '../dtos/AuthenticateBody';
 import { AuthenticateViewModel } from '../view-models/AuthenticateViewModel';
-import { SendForgotPasswordMail } from 'src/application/useCases/SendForgotPassawordMail';
+import { SendForgotPasswordMailUseCase } from 'src/application/useCases/SendForgotPassawordMailUseCase';
 
 @Controller('account')
 export class AccountController {
   constructor(
     private authenticateUserUseCase: AuthenticateUserUseCase,
-    private sendForgotPasswordMail: SendForgotPasswordMail,
+    private sendForgotPasswordMailUseCase: SendForgotPasswordMailUseCase,
   ) {}
 
   @Post('/authentication')
@@ -23,6 +23,6 @@ export class AccountController {
 
   @Post('/send-mail-reset-password')
   async resetPassword(@Body() { email }) {
-    await this.sendForgotPasswordMail.execute(email);
+    await this.sendForgotPasswordMailUseCase.execute(email);
   }
 }
