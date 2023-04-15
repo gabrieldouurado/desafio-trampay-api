@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { UsersRepository } from '../repositories/UsersRepository';
 import { compare } from 'bcryptjs';
-import { User } from '@prisma/client';
+import { User } from '../entities/User';
 
 interface IRequest {
   email: string;
