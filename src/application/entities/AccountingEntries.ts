@@ -1,13 +1,14 @@
 import { randomUUID } from 'node:crypto';
 
-export class User {
+export class AccountingEntries {
   id: string;
-  name: string;
-  email: string;
-  password: string;
 
+  releaseDate: Date;
+  recipient: string;
+  totalValue: number;
+
+  deletedAt: Date;
   createdAt: Date;
-  updatedAt: Date;
 
   constructor() {
     if (!this.id) {

@@ -33,7 +33,5 @@ export class SendForgotPasswordMailUseCase {
     });
 
     await this.usersTokensRepository.create(userToken);
-
-    console.log('generated token:', token);
   }
 }
