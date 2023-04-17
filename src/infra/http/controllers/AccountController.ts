@@ -4,6 +4,7 @@ import { AuthenticateBody } from '../dtos/AuthenticateBody';
 import { AuthenticateViewModel } from '../view-models/AuthenticateViewModel';
 import { SendForgotPasswordMailUseCase } from 'src/application/useCases/SendForgotPassawordMailUseCase';
 import { ResetUserPasswordUseCase } from 'src/application/useCases/ResetUserPasswordUseCase';
+import { CreateUserUseCase } from 'src/application/useCases/CreateUserUseCase';
 
 @Controller('account')
 export class AccountController {
@@ -11,6 +12,7 @@ export class AccountController {
     private authenticateUserUseCase: AuthenticateUserUseCase,
     private sendForgotPasswordMailUseCase: SendForgotPasswordMailUseCase,
     private resetUserPasswordUseCase: ResetUserPasswordUseCase,
+    private createUserUseCase: CreateUserUseCase,
   ) {}
 
   @Post('/authentication')
@@ -31,5 +33,10 @@ export class AccountController {
   @Patch('reset-password')
   async resetPassword(@Body() { token, password }) {
     await this.resetUserPasswordUseCase.execute({ token, password });
+  }
+
+  @Post('/create-user')
+  async createUser(@Body() { name, email, password }) {
+    await this.createUserUseCase.execute({ name, email, password });
   }
 }

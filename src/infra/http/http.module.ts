@@ -6,6 +6,7 @@ import { SendForgotPasswordMailUseCase } from 'src/application/useCases/SendForg
 import { ResetUserPasswordUseCase } from 'src/application/useCases/ResetUserPasswordUseCase';
 import { EntiresController } from './controllers/EntriesController';
 import { UploadCSVAccountingEntriesUseCase } from 'src/application/useCases/UploadCSVAccountingEntriesUseCase';
+import { CreateUserUseCase } from 'src/application/useCases/CreateUserUseCase';
 
 @Module({
   imports: [DatabaseModule],
@@ -15,6 +16,7 @@ import { UploadCSVAccountingEntriesUseCase } from 'src/application/useCases/Uplo
     SendForgotPasswordMailUseCase,
     ResetUserPasswordUseCase,
     UploadCSVAccountingEntriesUseCase,
+    CreateUserUseCase,
   ],
 })
 export class HttpModule {}
