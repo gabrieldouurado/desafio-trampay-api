@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../repositories/UsersRepository';
 import { User } from '../entities/User';
+import { hash } from 'bcryptjs';
 
 interface IRequest {
   name: string;
@@ -21,10 +22,12 @@ export class CreateUserUseCase {
 
     const user = new User();
 
+    const hashedPassword = await hash(password, 8);
+
     Object.assign(user, {
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
     await this.usersRepository.craete(user);
