@@ -4,6 +4,7 @@ import { UserToken } from '../entities/UserToken';
 import { UsersTokensRepository } from '../repositories/UsersTokensRepository';
 import { randomUUID } from 'node:crypto';
 import { addMinutes } from 'date-fns';
+import SendGrid = require('@sendgrid/mail');
 
 @Injectable()
 export class SendForgotPasswordMailUseCase {
@@ -14,7 +15,7 @@ export class SendForgotPasswordMailUseCase {
 
   async execute(email: string) {
     const user = await this.usersRepository.findByEmail(email);
-    const expiresTokenMinutes = 1;
+    const expiresTokenMinutes = parseInt(process.env.EXPIRES_RESET_PASSOWORD);
 
     if (!user) {
       throw new NotFoundException('User does not exists.');
@@ -33,5 +34,16 @@ export class SendForgotPasswordMailUseCase {
     });
 
     await this.usersTokensRepository.create(userToken);
+
+    SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+    const msg = {
+      to: email,
+      from: process.env.SENDGRID_SENDER,
+      subject: 'Recuperação se senha',
+      html: `<strong>Acesse o link para recuperar sua senha ${process.env.FRONTEND_URL}/reset-password/${token}</strong>`,
+    };
+
+    await SendGrid.send(msg);
   }
 }

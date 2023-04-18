@@ -1,6 +1,6 @@
 import {
+  BadRequestException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UsersRepository } from '../repositories/UsersRepository';
@@ -20,7 +20,7 @@ export class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new NotFoundException('User not found.');
+      throw new BadRequestException('Email of password incorrect.');
     }
 
     const passwordMatch = await compare(password, user.password);
