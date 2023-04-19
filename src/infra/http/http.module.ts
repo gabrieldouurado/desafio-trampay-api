@@ -7,6 +7,7 @@ import { ResetUserPasswordUseCase } from 'src/application/useCases/ResetUserPass
 import { EntiresController } from './controllers/EntriesController';
 import { UploadCSVAccountingEntriesUseCase } from 'src/application/useCases/UploadCSVAccountingEntriesUseCase';
 import { CreateUserUseCase } from 'src/application/useCases/CreateUserUseCase';
+import { SendGridMailProvider } from 'src/providers/MailProvider/implementations/SendGridMailProvider';
 
 @Module({
   imports: [DatabaseModule],
@@ -17,6 +18,7 @@ import { CreateUserUseCase } from 'src/application/useCases/CreateUserUseCase';
     ResetUserPasswordUseCase,
     UploadCSVAccountingEntriesUseCase,
     CreateUserUseCase,
+    SendGridMailProvider,
   ],
 })
 export class HttpModule {}
