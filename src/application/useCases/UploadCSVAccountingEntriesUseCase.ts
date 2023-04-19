@@ -61,6 +61,29 @@ export class UploadCSVAccountingEntriesUseCase {
     return JSON.stringify(validHeader) === JSON.stringify(receivedHeader);
   }
 
+  checkValidMonetaryValue(value: string): boolean {
+    if (value.match(/\./g)) {
+      return false;
+    }
+
+    if (value.match(/,/g).length > 1) {
+      return false;
+    }
+
+    const checkDecimals = value.split(',');
+    if (checkDecimals[1].length > 2) {
+      return false;
+    }
+
+    return true;
+  }
+
+  checkIfdateIsValid(receivedDate: string): boolean {
+    const date = new Date(receivedDate);
+
+    return date instanceof Date && !isNaN(date.getTime());
+  }
+
   async execute(filename: string): Promise<void> {
     const filePath = `./tmp/${filename}`;
 
@@ -88,6 +111,24 @@ export class UploadCSVAccountingEntriesUseCase {
         self.findIndex((selfEntry) => {
           return selfEntry.recipient === entry.recipient;
         });
+
+      const entryReleaseDateIsValid = this.checkIfdateIsValid(
+        entry.releaseDate,
+      );
+
+      if (!entryReleaseDateIsValid) {
+        throw new BadRequestException(
+          'Release date should be a forrmat YYYY-MM-DD',
+        );
+      }
+
+      const entryValueIsValid = this.checkValidMonetaryValue(entry.value);
+
+      if (!entryValueIsValid) {
+        throw new BadRequestException(
+          'The field value cannot have "." separetor\nShould be one ","\nShould be two decimals',
+        );
+      }
 
       if (entryAlreadyExists) {
         const formatEntry = {
@@ -117,7 +158,6 @@ export class UploadCSVAccountingEntriesUseCase {
         totalValue: entry.totalValue,
       });
 
-      // Verifica todas as entradas de um recipient
       const recipientEntries =
         await this.accountingEntriesRepository.findManyByRecipient(
           accountingEntries.recipient,
