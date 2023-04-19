@@ -1,73 +1,59 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Desafio Trampay API
+O projeto foi construido o frameword **NestJS** e o ORM **Prisma** para acessar o banco de dados.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Todo o projeto foi construido aplicando princípios SOLID e design patterns como Repository, in-memory database e mappers.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Executando o projeto
 
-## Description
+1. Criação do banco de dados usando o docker
+Para criar o banco de dados, pode ser usado o seguinte comando:
+``docker run --name trampay-db-teste -e POSTGRES_DB=trampay-db-test -e POSTGRES_USER=trampay_user -e POSTGRES_PASSWORD=trampay_pass -p 5432:5432 -d postgres``
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+gerando o container do banco de dados usando o comando acima, a URL de conexão com o banco, ficará dessa forma:
+``postgresql://trampay_user:trampay_pass@localhost:5432/trampay-db-test?schema=public``
 
-## Installation
+2. Executar as migrações
+É necessário executar as migrações para montar o banco de dados da maneira correta.
+``npx prisma migrate dev``
 
-```bash
-$ npm install
+3. Instalação de dependência
+``npm install``
+
+4. Execução em modo de desenvolvimento
+``npm run start``
+
+Para buildar o projeto, basta executar o comando
+``npm run start:prod``
+
+Existe um script para polular o banco de dados, ele criará um usuário com as seguintes informações:
+
+```
+nome: John Due
+email: johndue@email.com
+senha: john@123
 ```
 
-## Running the app
+Para executar o polulate use o seguinte comando:
+``npx prisma db seed``
 
-```bash
-# development
-$ npm run start
+## Testes
+O projeto possui alguns testes, para executá-los basta rodar o comando:
+``npm run test``
 
-# watch mode
-$ npm run start:dev
+## Padronização de código
+O projeto usa o ESLint e o Prettier para padronização e estilização de código.
 
-# production mode
-$ npm run start:prod
-```
+Para corrigir os problemas de lint, utilizar o comando:
 
-## Test
+``npm run lint``
 
-```bash
-# unit tests
-$ npm run test
+## Variáveis de ambiente
+Para que o projeto funcione corretamente, é necessário que as variáveis sejam configuradas corretamente. É necessário alterar o arquivo ``.env`` encontrado na raiz do projeto. Também existe um arquivo chamado ``.env.example`` ele é um arquivo de exemplo com as variáveis de ambiente presentes no projeto.
 
-# e2e tests
-$ npm run test:e2e
+Variáveis:
+- DATABASE_URL -> É a URL de conexão com o banco de dados
+- EXPIRES_RESET_PASSOWORD -> É o tempo em **minutos** em que o token de recuperação de senha será válido
+- SENDGRID_API_KEY -> É a chave de API do SendGrid o serviço de envio de email
+- SENDGRID_SENDER -> É o email que será o rementente dos envios
+- FRONTEND_URL -> É o endereço onde está hospedado o front-end da aplicação
 
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
